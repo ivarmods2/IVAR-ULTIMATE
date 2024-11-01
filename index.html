@@ -13,16 +13,24 @@
             justify-content: center;
             height: 100vh;
             background-color: #1c1f26;
-            color: #fff;
             margin: 0;
+            overflow: hidden;
         }
         .title {
-            font-size: 2rem;
+            font-size: 2.5rem;
+            color: #FF00FF; /* Neon Pink */
             font-weight: bold;
-            margin-bottom: 20px;
-            color: #FFD700; /* Gold color for the title */
             text-align: center;
-            text-shadow: 2px 2px 5px rgba(255, 215, 0, 0.5);
+            margin-bottom: 20px;
+            animation: glow 1.5s infinite alternate;
+        }
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #FF00FF, 0 0 10px #FF33FF, 0 0 15px #FF66FF;
+            }
+            to {
+                text-shadow: 0 0 10px #FF33FF, 0 0 20px #FF66FF, 0 0 30px #FF99FF;
+            }
         }
         .container {
             text-align: center;
@@ -32,64 +40,100 @@
             background-color: #2b2f38;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 1;
+            border: 2px solid #FF00FF; /* Neon Pink border */
         }
         .box {
-            font-size: 1.5rem;
-            margin: 15px 0;
-            padding: 15px;
+            font-size: 1.2rem; /* Smaller font size for boxes */
+            margin: 5px 0; /* Reduced margin */
+            padding: 10px; /* Reduced padding */
             border-radius: 10px;
-            border: 2px solid #999;
-            text-align: center;
-            color: #333;
-            background-color: #FFF3;
+            border: 2px solid #00FF00; /* Neon Green border */
+            background-color: rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
         }
         .period-box {
-            background: linear-gradient(45deg, #FFD700, #FFFFE0);
-            color: #333;
+            background: linear-gradient(45deg, #FF0000, #FF00FF); /* Neon Gradient */
+            color: #fff; /* White text for better contrast */
             font-weight: bold;
         }
         .timer-box, .result-box {
-            animation: rgbBoxAnimation 1.5s infinite alternate;
+            background: #333;
             color: #fff;
-        }
-        .telegram-button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            margin-top: 20px;
-            color: #fff;
-            background-color: #0088cc;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            display: inline-block;
-        }
-        .telegram-button:hover {
-            background-color: #005b8c;
         }
         .history {
-            margin-top: 20px;
-            text-align: left;
-            color: pink;
+            margin-top: 10px;
+            width: 95%; /* Set history box to 95% width */
+            max-height: 150px; /* Increased height for more items */
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(45deg, #00FF00, #00FFFF); /* Neon Green to Cyan */
+            padding: 5px; /* Less padding for a compact look */
+            border-radius: 10px;
+            overflow-y: auto;
+            border: 2px solid #00FF00; /* Neon Green border */
+            font-size: 0.85rem; /* Smaller font size */
+        }
+        .history-header {
+            color: #FF00FF; /* Neon Pink */
+            font-weight: bold;
+            font-size: 1rem; /* Smaller size for header */
+            border-bottom: 1px solid #FF00FF; /* Neon Pink */
+            padding-bottom: 3px;
+            margin-bottom: 5px;
         }
         .history-item {
             background-color: #333;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 5px 0;
-            border: 1px solid #555;
-            color: #ff69b4; /* pink color */
-            font-size: 0.9rem;
+            padding: 2px;
+            margin: 2px 0;
+            border: 1px solid #555; /* Dark border */
+            color: white; /* White text for history items */
+            display: flex;
+            justify-content: space-between;
         }
-        .history-item span {
-            display: block;
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
         }
-        @keyframes rgbBoxAnimation {
-            0% { background-color: #ff0000; }
-            33% { background-color: #00ff00; }
-            66% { background-color: #0000ff; }
-            100% { background-color: #ff00ff; }
+        .flame-particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: rgba(255, 69, 0, 0.8);
+            animation: floatUp 3s infinite ease-in;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+        .footer-text {
+            font-size: 1.5rem; /* Increased size */
+            color: #FF00FF; /* Neon Pink */
+            margin-top: 20px;
+            animation: glowText 1.5s infinite alternate;
+            font-weight: bold; /* Make footer text bold */
+        }
+        @keyframes glowText {
+            from {
+                text-shadow: 0 0 5px #FF00FF, 0 0 10px #FF33FF;
+            }
+            to {
+                text-shadow: 0 0 10px #FF33FF, 0 0 20px #FF66FF;
+            }
         }
     </style>
 </head>
@@ -99,28 +143,34 @@
         <div class="box period-box">Period: <span id="periodNumber">Loading...</span></div>
         <div class="box timer-box">Timer: <span id="timer">00 : 00</span></div>
         <div class="box result-box">Result: <span id="result">Waiting...</span></div>
-        <a href="https://t.me/ivarmodsultra" target="_blank" class="telegram-button">Join Telegram Channel</a>
+
         <div class="history">
-            <h3>History</h3>
+            <div class="history-header">History</div>
             <div id="historyList"></div>
         </div>
     </div>
+
+    <div class="footer-text">PRESENT BY IVAR MODS</div>
+
+    <div class="particle-container" id="particleContainer"></div>
 
     <script>
         const periodNumber = document.getElementById("periodNumber");
         const timerDisplay = document.getElementById("timer");
         const resultDisplay = document.getElementById("result");
         const historyList = document.getElementById("historyList");
+        const particleContainer = document.getElementById("particleContainer");
 
         const resultsArray = ["BIG", "SMALL", "BIG", "SMALL", "SMALL", "BIG", "SMALL", "BIG", "BIG", "SMALL"];
         let lastPeriod = null;
 
+        // Period and result update function
         function updatePeriodAndResult() {
             const now = new Date();
-            const minutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+            const totalMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
             const seconds = now.getUTCSeconds();
-            const period = 10001 + minutes;
-            const newPeriodNumber = `${now.toISOString().slice(0, 10).replace(/-/g, '')}1000${period}`;
+            const period = 1 + totalMinutes * 2 + (seconds >= 30 ? 1 : 0);
+            const newPeriodNumber = `${now.toISOString().slice(0, 10).replace(/-/g, '')}30${period}`;
 
             if (newPeriodNumber !== lastPeriod) {
                 lastPeriod = newPeriodNumber;
@@ -131,27 +181,43 @@
                 const result = resultsArray[randomIndex];
                 resultDisplay.textContent = result;
 
-                // Add to history in a box format
+                // Add to history in a compact format
                 const historyItem = document.createElement("div");
                 historyItem.className = "history-item";
                 historyItem.innerHTML = `<span>Period: ${newPeriodNumber}</span><span>Result: ${result}</span>`;
-                historyList.prepend(historyItem);  // Adds the new period at the top
+                historyList.prepend(historyItem);
             }
         }
 
+        // Timer update function
         function updateTimer() {
             const now = new Date();
-            const remainingSeconds = 60 - now.getUTCSeconds();
+            const seconds = now.getUTCSeconds();
+            const remainingSeconds = 30 - (seconds % 30);
             timerDisplay.textContent = `00 : ${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds}`;
+        }
+
+        // Flame particle generator function
+        function generateFlameParticles() {
+            const particle = document.createElement("div");
+            particle.classList.add("flame-particle");
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.animationDuration = `${Math.random() * 2 + 2}s`;
+            particleContainer.appendChild(particle);
+
+            setTimeout(() => particle.remove(), 3000);
         }
 
         // Run update every second
         setInterval(() => {
             updateTimer();
-            if (new Date().getUTCSeconds() === 0) {
+            if (new Date().getUTCSeconds() % 30 === 0) {
                 updatePeriodAndResult();
             }
         }, 1000);
+
+        // Generate flame particles every 200ms
+        setInterval(generateFlameParticles, 200);
     </script>
 </body>
 </html>
